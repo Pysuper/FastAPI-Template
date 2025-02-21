@@ -1,0 +1,63 @@
+name: Dependency Check
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # 每周日运行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+          
+      - name: Install dependencies
+        run: poetry install
+        
+      - name: Check outdated dependencies
+        run: poetry show --outdated
+        
+      - name: Run safety check
+        run: poetry run safety check
+        
+      - name: Run Bandit security scan
+        run: poetry run bandit -r app/
+        
+      - name: Create issue for updates
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const outdated = process.env.OUTDATED_DEPS;
+            const safety = process.env.SAFETY_CHECK;
+            const bandit = process.env.BANDIT_SCAN;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '依赖更新提醒',
+              body: `### 需要更新的依赖
+            ${outdated}
+            
+            ### 安全检查结果
+            ${safety}
+            
+            ### Bandit 扫描结果
+            ${bandit}
+            
+            请检查并更新相关依赖。`
+            }); 
