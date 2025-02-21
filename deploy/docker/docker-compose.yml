@@ -1,0 +1,115 @@
+version: '3.8'
+
+services:
+  # FastAPI应用服务
+  app:
+    build: .
+    container_name: speedy_app
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+      - ./storage:/app/storage
+    environment:
+      - ENVIRONMENT=production
+      - MYSQL_SERVER=mysql
+      - MYSQL_PORT=3306
+      - REDIS_HOST=redis
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - speedy_network
+
+  # MySQL服务
+  mysql:
+    image: mysql:8.0
+    container_name: speedy_mysql
+    restart: always
+    ports:
+      - "your_port:3306"
+    environment:
+      - MYSQL_DATABASE=nimbus
+      - MYSQL_ROOT_PASSWORD=your_password
+      - MYSQL_USER=speedy
+      - MYSQL_PASSWORD=speedy123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/mysql:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - speedy_network
+
+  # Redis服务
+  redis:
+    image: redis:7.0-alpine
+    container_name: speedy_redis
+    restart: always
+    ports:
+      - "your_port:your_port"
+    volumes:
+      - redis_data:/data
+    networks:
+      - speedy_network
+
+  # Nginx服务
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: speedy_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./static:/usr/share/nginx/html/static
+      - ./uploads:/usr/share/nginx/html/uploads
+    depends_on:
+      - app
+    networks:
+      - speedy_network
+
+  # Prometheus监控
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: speedy_prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - speedy_network
+
+  # Grafana监控面板
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: speedy_grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    depends_on:
+      - prometheus
+    networks:
+      - speedy_network
+
+volumes:
+  mysql_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  speedy_network:
+    driver: bridge

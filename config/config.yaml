@@ -1,0 +1,125 @@
+api:
+  host: 0.0.0.0
+  port: 8080
+  debug: false
+
+app:
+  name: Project
+  version: 1.0.0
+  description: A fast and secure file sharing platform.
+  author: PySuper Inc.
+  license: MIT
+  url: https://PySuper.io
+
+cache:
+  type: redis
+  host: localhost
+  port: your_port
+  db: 1
+  password: null
+  timeout: 300
+  key_prefix: speedy_cache_
+  expires_in: 3600
+
+cors:
+  allow_origin: [ "*" ]
+  allow_methods: [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+  allow_headers: [ "Content-Type", "Authorization" ]
+  max_age: 3600
+
+db:
+  host: localhost
+  driver: mysql+asyncmy
+  port: your_port
+  username: username
+  password: bSCKN64kJjXT5f5J
+  database: database
+  charset: utf8mb4
+  pool_size: 5
+  max_overflow: 10
+  pool_timeout: 30
+  pool_recycle: 1800
+  echo_sql: false
+  pool_pre_ping: true
+  connect_timeout: 10
+  ssl:
+    ssl_disabled: true
+
+email:
+  smtp_server: smtp.gmail.com
+  smtp_port: 587
+  username: test@example.com
+  password: test_password
+  sender: test@example.com
+  use_tls: true
+
+file:
+  max_size: 104857600
+  max_downloads: 10
+  max_upload_size: 104857600
+  max_upload_files: 10
+  max_filename_length: 255
+  upload_dir: uploads
+
+log:
+  level: INFO
+  file_logging: true
+  console_logging: true
+  async_logging: true
+  log_dir: logs
+  queue_size: 1000
+  rotation_max_bytes: 10485760
+  rotation_backup_count: 30
+  rotation_compress: true
+  alert_enabled: true
+  alert_error_threshold: 10
+  alert_interval: 3600
+  alert_channels: [ "email" ]
+  alert_receivers: [ "admin@example.com" ]
+
+rate_limiter:
+  enabled: true
+  strategy: fixed-window
+  max_requests: 100
+  time_window: 60
+  block_time: 300
+
+security:
+  secret_key: your-secret-key-here
+  algorithm: HS256
+  access_token_expire_minutes: 30
+  refresh_token_expire_days: 7
+  password_policy:
+    min_length: 8
+    max_length: 32
+    require_uppercase: true
+    require_lowercase: true
+    require_numbers: true
+    require_special_chars: true
+    max_repeated_chars: 3
+    password_history: 5
+    expire_days: 90
+    lock_duration: 30
+    max_attempts: 5
+
+service:
+  storage:
+    type: local
+    local_path: storage
+    cloud_providers:
+      aliyun:
+        access_key_id: your-access-key-id
+        access_key_secret: your-access-key-secret
+        oss_endpoint: oss-cn-hangzhou.aliyuncs.com
+        oss_bucket: your-oss-bucket-name
+      tencent:
+        secret_id: your-secret-id
+        secret_key: your-secret-key
+        cos_region: your-cos-region
+        cos_bucket: your-cos-bucket-name
+      huawei:
+        secret_id: your-secret-id
+        secret_key: your-secret-key
+        cos_region: your-cos-region
+        cos_bucket: your-cos-bucket-name
+

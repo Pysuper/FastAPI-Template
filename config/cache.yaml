@@ -1,0 +1,74 @@
+# Redis缓存配置
+redis:
+  host: localhost
+  port: your_port
+  db: 0
+  password: null
+  max_connections: 100
+  socket_timeout: 2.0
+  socket_connect_timeout: 2.0
+  socket_keepalive: true
+  health_check_interval: 30
+  retry_on_timeout: true
+  max_retries: 3
+  retry_interval: 0.1
+  encoding: utf-8
+  decode_responses: true
+
+# 内存缓存配置
+memory:
+  max_size: 10000
+  cleanup_interval: 60
+  default_expire: 300
+  enable_lru: true
+  enable_stats: true
+
+# 通用配置
+common:
+  backend_type: redis
+  strategy: redis
+  level: private
+  serialization_format: json
+  key_prefix: "cache:"
+  version: v1
+  key_separator: ":"
+  enable_memory_cache: true
+  enable_redis_cache: true
+  enable_stats: true
+
+# 监控配置
+monitor:
+  collection_interval: 60
+  retention_days: 30
+  alert_cooldown: 3600
+  enable_metrics: true
+  enable_tracing: true
+  enable_logging: true
+
+# 锁配置
+lock:
+  timeout: 30
+  blocking_timeout: 10
+  sleep: 0.1
+
+# 缓存配置
+cache:
+  max_size: 10000
+  cleanup_interval: 60
+  default_timeout: 300
+  enable_memory_cache: true
+  enable_redis_cache: true
+  enable_cache: true
+  type: redis
+  key_prefix: "cache:"
+  version: v1
+  ttl: 3600
+  serializer: json
+  level: private
+  lock_timeout: 30
+  max_retries: 3
+  retry_interval: 1
+  lock_sleep: 0.1
+  initial_delay: 1
+  max_delay: 10
+  backoff_factor: 0.3 

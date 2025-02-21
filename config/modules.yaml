@@ -1,0 +1,80 @@
+# 模块配置映射
+# 控制哪些模块的配置需要被加载
+# enabled: 是否启用该模块的配置
+# order: 加载顺序（数字越小越先加载）
+
+logging:
+  enabled: true
+  order: 0
+  description: "日志配置"
+
+database:
+  enabled: true
+  order: 1
+  description: "数据库配置"
+
+redis:
+  enabled: true
+  order: 2
+  description: "Redis缓存配置"
+
+security:
+  enabled: true
+  order: 3
+  description: "安全配置"
+
+email:
+  enabled: false
+  order: 4
+  description: "邮件配置"
+
+api:
+  enabled: true
+  order: 5
+  description: "API配置"
+
+cache:
+  enabled: true
+  order: 6
+  description: "缓存配置"
+
+session:
+  enabled: true
+  order: 7
+  description: "Session配置"
+
+upload:
+  enabled: true
+  order: 8
+  description: "上传配置"
+
+jwt:
+  enabled: true
+  order: 9
+  description: "JWT配置"
+
+captcha:
+  enabled: true
+  order: 10
+  description: "验证码配置"
+
+swagger:
+  enabled: true
+  order: 11
+  description: "Swagger配置"
+
+cors:
+  enabled: true
+  order: 12
+  description: "跨域配置"
+
+swagger_ui:
+  enabled: true
+  order: 13
+  description: "Swagger UI配置"
+
+admin:
+  enabled: true
+  order: 14
+  description: "后台管理配置"
+

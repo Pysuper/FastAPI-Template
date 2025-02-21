@@ -1,0 +1,107 @@
+# 中间件配置文件
+middlewares:
+  # 安全中间件配置
+  security:
+    enabled: true
+    allowed_hosts: [ "*" ]
+    trusted_hosts: [ ]
+    allowed_methods: [ "GET", "POST", "PUT", "DELETE", "PATCH" ]
+    secure_headers: true
+    xss_protection: true
+    content_security_policy: true
+    frame_deny: true
+    hsts: true
+    referrer_policy: "same-origin"
+    exclude_paths: [ "/health", "/metrics" ]
+
+  # 监控中间件配置
+  monitor:
+    enabled: true
+    slow_request_threshold: 1.0
+    collect_metrics: true
+    include_request_body: false
+    include_response_body: false
+    exclude_paths: [ "/health", "/metrics" ]
+    metrics_path: "/metrics"
+    buckets: [ 0.1, 0.3, 0.5, 1.0, 2.0, 5.0 ]
+
+  # 认证中间件配置
+  auth:
+    enabled: true
+    jwt_secret: "your-jwt-secret"
+    jwt_algorithm: "HS256"
+    token_expire_minutes: 30
+    refresh_token_expire_minutes: 1440
+    token_url: "/auth/token"
+    refresh_url: "/auth/refresh"
+    exclude_paths: [ "/health", "/metrics", "/auth/token", "/auth/refresh" ]
+
+  # 压缩中间件配置
+  compression:
+    enabled: true
+    minimum_size: 500
+    compression_level: 6
+    include_media_types:
+      - "text/plain"
+      - "text/html"
+      - "text/css"
+      - "text/javascript"
+      - "application/javascript"
+      - "application/json"
+      - "application/xml"
+    exclude_paths: [ "/health", "/metrics" ]
+    algorithms: [ "br", "gzip", "deflate" ]
+
+  # 缓存中间件配置
+  cache:
+    enabled: true
+    ttl: 300
+    by_query_params: true
+    by_headers: [ ]
+    exclude_paths: [ "/health", "/metrics" ]
+    exclude_methods: [ "POST", "PUT", "DELETE", "PATCH" ]
+    cache_control: true
+    vary_by_auth: true
+    backend: "memory"
+
+  # CORS中间件配置
+  cors:
+    enabled: true
+    allow_origins: [ "*" ]
+    allow_methods: [ "*" ]
+    allow_headers: [ "*" ]
+    allow_credentials: true
+    expose_headers: [ ]
+    max_age: 600
+
+  # 限流中间件配置
+  rate_limit:
+    enabled: true
+    rate_limit: 100
+    time_window: 60
+    by_ip: true
+    by_path: true
+    by_user: false
+    exclude_paths: [ "/health", "/metrics" ]
+    storage_type: "memory"
+
+  # 追踪中间件配置
+  tracing:
+    enabled: true
+    header_name: "X-Request-ID"
+    include_headers: [ ]
+    include_response_headers: [ ]
+    include_timing: true
+    include_body: false
+    exclude_paths: [ "/health", "/metrics" ]
+
+  # 日志中间件配���
+  logging:
+    enabled: true
+    log_request_body: false
+    log_response_body: false
+    log_request_headers: true
+    log_response_headers: true
+    sensitive_headers: [ "authorization", "cookie" ]
+    exclude_paths: [ "/health", "/metrics" ]
+    log_level: "INFO" 

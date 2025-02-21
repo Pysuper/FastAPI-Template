@@ -1,0 +1,19 @@
+# 数据库配置
+
+# 数据库连接配置
+driver: mysql+asyncmy
+host: localhost
+port: your_port
+username: username
+password: ""
+database: database_name
+
+# 连接池配置
+pool_size: 5
+max_overflow: 10
+pool_timeout: 30
+pool_recycle: 3600
+
+# 查询配置
+echo: false
+echo_pool: false 
