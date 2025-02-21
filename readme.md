@@ -61,7 +61,7 @@ Speedy/
 
 - Python 3.8+
 - Redis
-- PostgreSQL
+- MySQL
 
 ### 安装
 ```bash
@@ -171,7 +171,7 @@ python mian.py
 
 ## 📞 联系我们
 
-- Issue: [GitHub Issues](https://github.com/yourusername/speedy/issues)
+- Issue: [GitHub Issues](https://github.com/Pysuper/FastAPI-Template/issues)
 - Email: small.spider.p@gmail.com
 
 ## 🌟 致谢
